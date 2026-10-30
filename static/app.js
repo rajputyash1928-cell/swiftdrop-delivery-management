@@ -19,12 +19,15 @@ function toast(msg) {
     const el = $('toast');
     el.textContent = msg;
     el.classList.add('show');
+
     setTimeout(() => el.classList.remove('show'), 2600);
 }
+
 
 /* NAVIGATION */
 
 function showView(id) {
+
     document.querySelectorAll('.view').forEach(x =>
         x.classList.toggle('active', x.id === id)
     );
@@ -46,7 +49,7 @@ function showView(id) {
         orders: 'Review customer requests and keep every delivery moving.',
         drivers: 'Monitor your delivery team and current assignments.',
         routes: 'Plan efficient dispatch sequences for active orders.',
-        map: 'Monitor simulated delivery drivers and customer locations.',
+        map: 'Monitor simulated delivery drivers across Pune.',
         analytics: 'A quick view of delivery service performance.'
     };
 
@@ -71,9 +74,11 @@ document.querySelectorAll('.nav').forEach(b => {
     b.addEventListener('click', () => showView(b.dataset.view));
 });
 
+
 /* API */
 
 async function api(url, opts = {}) {
+
     const r = await fetch(url, {
         headers: { 'Content-Type': 'application/json' },
         ...opts
@@ -89,17 +94,21 @@ async function api(url, opts = {}) {
 }
 
 async function loadData() {
+
     try {
         state = await api('/api/operations');
         renderAll();
+
     } catch (e) {
         toast(e.message);
     }
 }
 
+
 /* DASHBOARD */
 
 function renderAll() {
+
     const s = state.stats;
 
     $('mTotal').textContent = s.total;
@@ -120,17 +129,21 @@ function renderAll() {
 
     $('fleetSummary').innerHTML = state.drivers.map(d => `
         <div class="fleet-line">
+
             <div class="fleet-avatar">
                 ${esc(d.name.split(' ').map(x => x[0]).join(''))}
             </div>
+
             <div>
                 <b>${esc(d.name)}</b>
                 <small>${esc(d.vehicle)} · ${esc(d.id)}</small>
             </div>
+
             <span class="status-pill"
                 style="${d.status === 'Available' ? 'background:#eef2ff;color:#5275d5' : ''}">
                 ${esc(d.status)}
             </span>
+
         </div>
     `).join('');
 
@@ -157,8 +170,7 @@ function renderAll() {
 
         <div class="insight">
             <b>Delivery progress</b>
-            ${s.delivered} of ${s.total} orders are marked as delivered
-            in this demo dataset.
+            ${s.delivered} of ${s.total} orders are marked as delivered.
         </div>
 
         <div class="insight">
@@ -168,18 +180,14 @@ function renderAll() {
 
         <div class="insight">
             <b>Route planning</b>
-            Use route planning to generate a suggested sequence
-            for all active stops.
+            Use route planning to generate a suggested sequence.
         </div>
     `;
 
     renderOrders();
     renderDrivers();
-
-    if ($('map')?.classList.contains('active')) {
-        renderDemoMap();
-    }
 }
+
 
 /* ORDERS */
 
@@ -192,13 +200,18 @@ function driverName(id) {
 }
 
 function orderRow(o) {
+
     return `
         <tr>
+
             <td>${esc(o.id)}</td>
             <td>${esc(o.customer)}</td>
             <td>${esc(o.address)}</td>
             <td>${esc(o.weight)} kg</td>
-            <td>${o.priority >= 4 ? 'Urgent' : o.priority >= 3 ? 'High' : 'Normal'}</td>
+
+            <td>
+                ${o.priority >= 4 ? 'Urgent' : o.priority >= 3 ? 'High' : 'Normal'}
+            </td>
 
             <td>
                 <select aria-label="Assign driver"
@@ -232,11 +245,13 @@ function orderRow(o) {
 
                 </select>
             </td>
+
         </tr>
     `;
 }
 
 function renderOrders() {
+
     if (!$('orderRows')) return;
 
     const q = ($('orderSearch')?.value || '').toLowerCase();
@@ -252,9 +267,11 @@ function renderOrders() {
         '<tr><td colspan="8">No matching orders.</td></tr>';
 }
 
+
 /* DRIVERS */
 
 function renderDrivers() {
+
     $('driverCards').innerHTML = state.drivers.map(d => {
 
         const assigned = state.orders.filter(o =>
@@ -267,6 +284,7 @@ function renderDrivers() {
             <article class="driver-card">
 
                 <div class="driver-top">
+
                     <div class="driver-big">
                         ${esc(d.name.split(' ').map(x => x[0]).join(''))}
                     </div>
@@ -275,6 +293,7 @@ function renderDrivers() {
                         <b>${esc(d.name)}</b>
                         <small>${esc(d.id)} · ${esc(d.phone)}</small>
                     </div>
+
                 </div>
 
                 <div class="driver-meta">
@@ -306,6 +325,7 @@ function renderDrivers() {
     }).join('');
 }
 
+
 /* CREATE ORDER */
 
 function openOrderForm() {
@@ -317,9 +337,11 @@ function closeOrderForm() {
 }
 
 $('orderForm').addEventListener('submit', async e => {
+
     e.preventDefault();
 
     try {
+
         const data = Object.fromEntries(new FormData(e.target));
 
         await api('/api/orders', {
@@ -328,11 +350,13 @@ $('orderForm').addEventListener('submit', async e => {
         });
 
         e.target.reset();
+
         closeOrderForm();
 
         await loadData();
 
         showView('orders');
+
         toast('New delivery order created.');
 
     } catch (err) {
@@ -340,10 +364,13 @@ $('orderForm').addEventListener('submit', async e => {
     }
 });
 
+
 /* UPDATE ORDER */
 
 async function updateOrder(id, data) {
+
     try {
+
         await api('/api/orders/' + id, {
             method: 'PATCH',
             body: JSON.stringify(data)
@@ -358,10 +385,13 @@ async function updateOrder(id, data) {
     }
 }
 
+
 /* ROUTE OPTIMIZATION */
 
 async function optimizeRoute() {
+
     try {
+
         const d = await api('/api/route/optimize', {
             method: 'POST',
             body: '{}'
@@ -375,13 +405,19 @@ async function optimizeRoute() {
             <div class="route-flow">
 
                 ${d.route.map((id, i) => `
+
                     <div class="route-stop">
+
                         <b>
                             ${i === 0
                                 ? 'Warehouse'
                                 : esc(state.locations.find(l => l.id === id)?.name || id)}
                         </b>
-                        <small>${i === 0 ? 'Dispatch origin' : 'Stop ' + i}</small>
+
+                        <small>
+                            ${i === 0 ? 'Dispatch origin' : 'Stop ' + i}
+                        </small>
+
                     </div>
 
                     ${i < d.route.length - 1
@@ -402,252 +438,290 @@ async function optimizeRoute() {
 
 
 /* ==========================================
-   DEMO LIVE MAP
+   REAL PUNE DEMO LIVE MAP
 ========================================== */
 
-let mapRunning = false;
-let mapFrame = null;
-let mapProgress = 0;
-let mapLastTime = 0;
-let mapRoute = [];
-let mapPoints = [];
+let puneMap = null;
+let puneDriver = null;
+let puneAnimation = null;
+let puneRunning = false;
+let puneProgress = 0;
+let puneLastTime = 0;
 
-const MAP_WIDTH = 1000;
-const MAP_HEIGHT = 600;
+const puneLocations = [
 
-function getMapCoordinates() {
+    {
+        name: 'Warehouse',
+        position: [18.5289, 73.8744],
+        type: 'warehouse'
+    },
 
-    const locations = state.locations || [];
+    {
+        name: 'Shivajinagar',
+        position: [18.5308, 73.8475],
+        type: 'customer'
+    },
 
-    if (!locations.length) return [];
+    {
+        name: 'Deccan',
+        position: [18.5158, 73.8419],
+        type: 'customer'
+    },
 
-    const xs = locations.map(l => Number(l.x) || 0);
-    const ys = locations.map(l => Number(l.y) || 0);
+    {
+        name: 'Kothrud',
+        position: [18.5074, 73.8077],
+        type: 'customer'
+    },
 
-    const minX = Math.min(...xs);
-    const maxX = Math.max(...xs);
-    const minY = Math.min(...ys);
-    const maxY = Math.max(...ys);
+    {
+        name: 'Swargate',
+        position: [18.5018, 73.8636],
+        type: 'customer'
+    },
 
-    const rangeX = maxX - minX || 1;
-    const rangeY = maxY - minY || 1;
+    {
+        name: 'Hadapsar',
+        position: [18.5089, 73.9260],
+        type: 'customer'
+    }
 
-    return locations.map((location, index) => {
+];
 
-        let x = Number(location.x) || 0;
-        let y = Number(location.y) || 0;
+let puneRouteCoordinates = puneLocations.map(
+    location => location.position
+);
 
-        return {
-            ...location,
-            px: 90 + ((x - minX) / rangeX) * 820,
-            py: 80 + ((maxY - y) / rangeY) * 440
-        };
-    });
-}
 
 function renderDemoMap() {
 
-    const map = $('demoMap');
+    const mapElement = $('demoMap');
 
-    if (!map || !state.locations.length) {
-        if (map) {
-            map.innerHTML = '<div class="empty-state">No map locations available.</div>';
-        }
+    if (!mapElement) return;
+
+    if (typeof L === 'undefined') {
+
+        mapElement.innerHTML =
+            '<div class="empty-state">Map library could not load. Please refresh the page.</div>';
+
         return;
     }
 
-    mapPoints = getMapCoordinates();
+    if (!puneMap) {
 
-    const warehouse = mapPoints.find(l => l.id === 'W');
+        mapElement.innerHTML = '';
 
-    const customers = mapPoints.filter(l => l.id !== 'W');
+        puneMap = L.map('demoMap').setView(
+            [18.5204, 73.8567],
+            12
+        );
 
-    if (!warehouse || !customers.length) {
-        map.innerHTML = '<div class="empty-state">Warehouse or customer locations are missing.</div>';
-        return;
-    }
+        L.tileLayer(
+            'https://tile.openstreetmap.org/{z}/{x}/{y}.png',
+            {
+                maxZoom: 19,
+                attribution: '&copy; OpenStreetMap contributors'
+            }
+        ).addTo(puneMap);
 
-    mapRoute = [warehouse, ...customers, warehouse];
 
-    const roadLines = customers.map(customer => `
-        <line class="map-road"
-            x1="${warehouse.px}" y1="${warehouse.py}"
-            x2="${customer.px}" y2="${customer.py}" />
-    `).join('');
+        // Add warehouse and customer markers.
 
-    const routePoints = mapRoute.map(p => `${p.px},${p.py}`).join(' ');
+        puneLocations.forEach(location => {
 
-    map.innerHTML = `
+            const icon = L.divIcon({
 
-        <svg viewBox="0 0 ${MAP_WIDTH} ${MAP_HEIGHT}"
-             preserveAspectRatio="none">
+                className: '',
 
-            ${roadLines}
+                html: location.type === 'warehouse'
+                    ? '<div style="font-size:25px">🏭</div>'
+                    : '<div style="font-size:23px">📍</div>',
 
-            <polyline
-                class="map-route"
-                points="${routePoints}" />
+                iconSize: [30, 30],
 
-        </svg>
+                iconAnchor: [15, 15]
 
-        ${mapPoints.map(location => {
+            });
 
-            const isWarehouse = location.id === 'W';
+            L.marker(location.position, { icon })
+                .addTo(puneMap)
+                .bindPopup(`
+                    <b>${location.name}</b><br>
+                    ${location.type === 'warehouse'
+                        ? 'Delivery warehouse'
+                        : 'Customer delivery location'}
+                `);
 
-            return `
-                <div class="map-marker ${isWarehouse ? 'warehouse' : 'customer'}"
-                    style="left:${location.px / MAP_WIDTH * 100}%;
-                           top:${location.py / MAP_HEIGHT * 100}%">
+        });
 
-                    <span>${isWarehouse ? '🏭' : '📍'}</span>
 
-                    ${esc(location.name)}
+        // Display the suggested sample route.
 
-                </div>
-            `;
-        }).join('')}
+        L.polyline(puneRouteCoordinates, {
 
-        <div class="map-marker driver" id="movingDriver"
-            style="left:${warehouse.px / MAP_WIDTH * 100}%;
-                   top:${warehouse.py / MAP_HEIGHT * 100}%">
+            color: '#3568e8',
+            weight: 5,
+            opacity: 0.8,
+            dashArray: '10, 10'
 
-            <span>🚚</span>
-            Demo Driver
+        }).addTo(puneMap);
 
-        </div>
 
-    `;
+        // Create moving truck marker.
 
-    $('mapStops').textContent = customers.length;
-    $('mapDrivers').textContent = 1;
+        const truckIcon = L.divIcon({
 
-    if (!mapRunning) {
+            className: '',
+
+            html: '<div style="font-size:28px">🚚</div>',
+
+            iconSize: [35, 35],
+
+            iconAnchor: [17, 17]
+
+        });
+
+        puneDriver = L.marker(
+            puneRouteCoordinates[0],
+            { icon: truckIcon }
+        ).addTo(puneMap);
+
+        puneDriver.bindPopup('<b>SwiftDrop Demo Driver</b>');
+
+
+        $('mapStops').textContent = '5';
+        $('mapDrivers').textContent = '1';
+
         $('mapDeliveryStatus').textContent = 'Ready';
         $('mapStatus').textContent = '● Simulation ready';
+
     }
 
-    updateDriverPosition();
+    setTimeout(() => {
+        puneMap.invalidateSize();
+    }, 250);
+
 }
 
-function updateDriverPosition() {
-
-    const driver = $('movingDriver');
-
-    if (!driver || mapRoute.length < 2) return;
-
-    const totalSegments = mapRoute.length - 1;
-
-    const totalProgress = mapProgress * totalSegments;
-
-    const segment = Math.min(
-        Math.floor(totalProgress),
-        totalSegments - 1
-    );
-
-    const fraction = totalProgress - segment;
-
-    const start = mapRoute[segment];
-    const end = mapRoute[segment + 1];
-
-    const x = start.px + (end.px - start.px) * fraction;
-    const y = start.py + (end.py - start.py) * fraction;
-
-    driver.style.left = (x / MAP_WIDTH * 100) + '%';
-    driver.style.top = (y / MAP_HEIGHT * 100) + '%';
-
-    if (mapProgress >= 1) {
-        $('mapDeliveryStatus').textContent = 'Route completed';
-    } else {
-        $('mapDeliveryStatus').textContent =
-            'Stop ' + Math.min(segment + 1, totalSegments) +
-            ' of ' + totalSegments;
-    }
-}
-
-function animateDriver(timestamp) {
-
-    if (!mapRunning) return;
-
-    if (!mapLastTime) mapLastTime = timestamp;
-
-    const delta = timestamp - mapLastTime;
-
-    mapLastTime = timestamp;
-
-    // Full route takes approximately 40 seconds.
-    mapProgress += delta / 40000;
-
-    if (mapProgress >= 1) {
-        mapProgress = 0;
-    }
-
-    updateDriverPosition();
-
-    mapFrame = requestAnimationFrame(animateDriver);
-}
 
 function startDemoMap() {
 
-    if (!mapRoute.length) {
+    if (!puneMap) {
         renderDemoMap();
     }
 
-    if (mapRoute.length < 2) {
-        toast('Map locations are not available.');
-        return;
-    }
+    if (!puneDriver || puneRunning) return;
 
-    if (mapRunning) return;
-
-    mapRunning = true;
-    mapLastTime = 0;
+    puneRunning = true;
+    puneLastTime = 0;
 
     $('mapStatus').textContent = '● Driver moving';
-    $('mapDeliveryStatus').textContent = 'In progress';
+    $('mapDeliveryStatus').textContent = 'In transit';
 
-    mapFrame = requestAnimationFrame(animateDriver);
+    puneAnimation = requestAnimationFrame(movePuneDriver);
 
-    toast('Demo delivery simulation started.');
 }
+
+
+function movePuneDriver(timestamp) {
+
+    if (!puneRunning) return;
+
+    if (!puneLastTime) {
+        puneLastTime = timestamp;
+    }
+
+    const delta = timestamp - puneLastTime;
+
+    puneLastTime = timestamp;
+
+    // Complete the sample route in approximately 60 seconds.
+
+    puneProgress += delta / 60000;
+
+    if (puneProgress >= 1) {
+        puneProgress = 0;
+    }
+
+    const totalSegments = puneRouteCoordinates.length - 1;
+
+    const position = puneProgress * totalSegments;
+
+    const segment = Math.min(
+        Math.floor(position),
+        totalSegments - 1
+    );
+
+    const fraction = position - segment;
+
+    const start = puneRouteCoordinates[segment];
+    const end = puneRouteCoordinates[segment + 1];
+
+    const lat = start[0] + (end[0] - start[0]) * fraction;
+    const lng = start[1] + (end[1] - start[1]) * fraction;
+
+    puneDriver.setLatLng([lat, lng]);
+
+    $('mapDeliveryStatus').textContent =
+        'Stop ' + (segment + 1) + ' of ' + totalSegments;
+
+    puneAnimation = requestAnimationFrame(movePuneDriver);
+
+}
+
 
 function pauseDemoMap() {
 
-    mapRunning = false;
+    puneRunning = false;
 
-    if (mapFrame) {
-        cancelAnimationFrame(mapFrame);
-        mapFrame = null;
+    if (puneAnimation) {
+
+        cancelAnimationFrame(puneAnimation);
+
+        puneAnimation = null;
+
     }
 
-    mapLastTime = 0;
+    puneLastTime = 0;
 
     $('mapStatus').textContent = 'Ⅱ Simulation paused';
+
     $('mapDeliveryStatus').textContent = 'Paused';
 
-    toast('Demo simulation paused.');
 }
+
 
 function resetDemoMap() {
 
     pauseDemoMap();
 
-    mapProgress = 0;
+    puneProgress = 0;
 
-    renderDemoMap();
+    if (puneDriver) {
+
+        puneDriver.setLatLng(
+            puneRouteCoordinates[0]
+        );
+
+    }
 
     $('mapStatus').textContent = '● Simulation reset';
+
     $('mapDeliveryStatus').textContent = 'Ready';
 
-    toast('Demo map reset successfully.');
+    toast('Pune demo map reset successfully.');
+
 }
 
 
-/* DATE AND INITIAL LOAD */
+/* INITIAL LOAD */
 
 $('today').textContent = new Intl.DateTimeFormat('en-IN', {
+
     day: '2-digit',
     month: 'short',
     year: 'numeric'
+
 }).format(new Date());
 
 loadData();
