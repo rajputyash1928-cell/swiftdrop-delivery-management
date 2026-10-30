@@ -1,471 +1,484 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
 <head>
-<meta charset="utf-8">
-<meta name="viewport" content="width=device-width,initial-scale=1">
-<title>SwiftDrop | Delivery Operations</title>
-<link rel="stylesheet" href="{{ url_for('static',filename='style.css') }}">
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>SwiftDrop | Delivery Management</title>
+
+    <link rel="stylesheet" href="{{ url_for('static', filename='style.css') }}">
+
+    <!-- Leaflet Map CSS -->
+    <link
+        rel="stylesheet"
+        href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css"
+    >
+
+    <!-- Leaflet Map Library -->
+    <script
+        src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js"
+        defer>
+    </script>
+
+    <!-- Application JavaScript -->
+    <script
+        src="{{ url_for('static', filename='app.js') }}"
+        defer>
+    </script>
 </head>
 
 <body>
 
-<aside class="sidebar">
+<div class="app-shell">
 
-    <div class="brand">
-        <span class="brand-icon">S</span>
-        <span>swift<span class="brand-accent">drop</span>
-            <small>DELIVERY OPERATIONS</small>
-        </span>
-    </div>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
 
-    <nav>
-        <button class="nav active" data-view="overview"><span>▦</span> Overview</button>
-        <button class="nav" data-view="orders"><span>▤</span> Orders</button>
-        <button class="nav" data-view="drivers"><span>♙</span> Drivers</button>
-        <button class="nav" data-view="routes"><span>⌖</span> Route planning</button>
-        <button class="nav" data-view="map"><span>📍</span> Demo Live Map</button>
-        <button class="nav" data-view="analytics"><span>▥</span> Analytics</button>
-    </nav>
-
-    <div class="sidebar-bottom">
-        <div class="support">
-            <b>Need help?</b>
-            <small>Operations support is available 24/7.</small>
-            <button onclick="toast('Support request noted for this demo.')">Contact support</button>
-        </div>
-
-        <div class="user">
-            <div class="avatar">OP</div>
+        <div class="brand">
+            <div class="brand-icon">S</div>
             <div>
-                <b>Operations Team</b>
-                <small>Administrator</small>
+                <h2>SwiftDrop</h2>
+                <small>Delivery Management</small>
             </div>
-            <span class="online"></span>
         </div>
-    </div>
 
-</aside>
+        <div class="sidebar-label">MENU</div>
 
-<main>
+        <nav class="navigation">
 
-<header class="topbar">
+            <button class="nav active" data-view="overview">
+                <span>▦</span> Overview
+            </button>
 
-    <div>
-        <div class="crumb">OPERATIONS <span>/</span> <b id="crumb">Overview</b></div>
-        <h1 id="pageTitle">Good afternoon, team <span>✦</span></h1>
-        <p>Here’s what’s happening with your deliveries today.</p>
-    </div>
+            <button class="nav" data-view="orders">
+                <span>📦</span> Orders
+            </button>
 
-    <div class="top-actions">
-        <span class="live"><i></i> Demo operations live</span>
-        <button class="icon-btn" title="Refresh" onclick="loadData()">↻</button>
-        <div class="date-pill" id="today"></div>
-    </div>
+            <button class="nav" data-view="drivers">
+                <span>🚚</span> Drivers
+            </button>
 
-</header>
+            <button class="nav" data-view="routes">
+                <span>🗺️</span> Route Planning
+            </button>
+
+            <button class="nav" data-view="map">
+                <span>📍</span> Demo Live Map
+            </button>
+
+            <button class="nav" data-view="analytics">
+                <span>📊</span> Analytics
+            </button>
+
+        </nav>
+
+        <div class="sidebar-bottom">
+            <small>SwiftDrop Delivery System</small>
+            <p>Smart Route Optimization</p>
+        </div>
+
+    </aside>
 
 
-<!-- OVERVIEW -->
+    <!-- MAIN CONTENT -->
+    <main class="main-content">
 
-<section id="overview" class="view active">
+        <!-- TOPBAR -->
+        <header class="topbar">
 
-    <div class="metrics">
-
-        <article class="metric">
-            <div class="metric-top">
-                <span>Total orders</span>
-                <span class="metric-icon blue">▤</span>
+            <div>
+                <div class="breadcrumb" id="crumb">Overview</div>
+                <h1 id="pageTitle">Good afternoon, team <span>✦</span></h1>
+                <p>Here’s what’s happening with your deliveries today.</p>
             </div>
-            <strong id="mTotal">—</strong>
-            <small><em>Today</em> · all delivery requests</small>
-        </article>
 
-        <article class="metric">
-            <div class="metric-top">
-                <span>Delivered</span>
-                <span class="metric-icon green">✓</span>
+            <div class="top-actions">
+                <button class="secondary" onclick="loadData()">↻ Refresh</button>
+                <span id="today"></span>
             </div>
-            <strong id="mDelivered">—</strong>
-            <small><em class="positive">On track</em> · completed successfully</small>
-        </article>
 
-        <article class="metric">
-            <div class="metric-top">
-                <span>In transit</span>
-                <span class="metric-icon orange">➤</span>
-            </div>
-            <strong id="mTransit">—</strong>
-            <small>Currently out for delivery</small>
-        </article>
+        </header>
 
-        <article class="metric">
-            <div class="metric-top">
-                <span>Pending orders</span>
-                <span class="metric-icon purple">◷</span>
-            </div>
-            <strong id="mPending">—</strong>
-            <small>Waiting for dispatch</small>
-        </article>
 
-    </div>
+        <!-- OVERVIEW -->
+        <section id="overview" class="view active">
 
-    <div class="content-grid">
-
-        <article class="panel large">
-
-            <div class="panel-head">
+            <div class="section-heading">
                 <div>
-                    <h2>Delivery activity</h2>
-                    <p>Current order status across your operation</p>
+                    <h2>Dashboard Overview</h2>
+                    <p>Monitor your delivery operations.</p>
                 </div>
-                <button class="text-btn" onclick="showView('orders')">View all orders →</button>
+
+                <button class="primary" onclick="openOrderForm()">
+                    + Create Order
+                </button>
             </div>
 
-            <div class="activity-wrap">
+            <div class="metrics-grid">
 
-                <div class="donut" id="donut">
-                    <div>
-                        <b id="donutTotal">0</b>
-                        <small>Total orders</small>
+                <article class="metric-card">
+                    <small>Total Orders</small>
+                    <h2 id="mTotal">0</h2>
+                </article>
+
+                <article class="metric-card">
+                    <small>Delivered</small>
+                    <h2 id="mDelivered">0</h2>
+                </article>
+
+                <article class="metric-card">
+                    <small>In Transit</small>
+                    <h2 id="mTransit">0</h2>
+                </article>
+
+                <article class="metric-card">
+                    <small>Pending</small>
+                    <h2 id="mPending">0</h2>
+                </article>
+
+            </div>
+
+
+            <div class="dashboard-grid">
+
+                <article class="panel">
+                    <h3>Order Status</h3>
+
+                    <div class="donut" id="donut">
+                        <span id="donutTotal">0</span>
                     </div>
-                </div>
 
-                <div class="legend">
-                    <div><i class="dot delivered"></i><span>Delivered</span><b id="lDelivered">0</b></div>
-                    <div><i class="dot transit"></i><span>In transit</span><b id="lTransit">0</b></div>
-                    <div><i class="dot pending"></i><span>Pending</span><b id="lPending">0</b></div>
-                </div>
+                    <div class="legend">
+                        <p>🟢 Delivered: <b id="lDelivered">0</b></p>
+                        <p>🟠 In Transit: <b id="lTransit">0</b></p>
+                        <p>🟣 Pending: <b id="lPending">0</b></p>
+                    </div>
+                </article>
+
+
+                <article class="panel">
+                    <h3>Fleet Summary</h3>
+                    <div id="fleetSummary"></div>
+                </article>
 
             </div>
 
-        </article>
 
-        <article class="panel">
+            <article class="panel">
+                <h3>Recent Orders</h3>
 
-            <div class="panel-head">
+                <div class="table-wrapper">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Address</th>
+                                <th>Weight</th>
+                                <th>Priority</th>
+                                <th>Driver</th>
+                                <th>Status</th>
+                                <th>Update</th>
+                            </tr>
+                        </thead>
+
+                        <tbody id="recentRows"></tbody>
+                    </table>
+                </div>
+
+            </article>
+
+        </section>
+
+
+        <!-- ORDERS -->
+        <section id="orders" class="view">
+
+            <div class="section-heading">
                 <div>
-                    <h2>Fleet availability</h2>
-                    <p>Driver status overview</p>
+                    <h2>Order Management</h2>
+                    <p>Manage customer delivery orders.</p>
                 </div>
-                <button class="text-btn" onclick="showView('drivers')">Manage →</button>
+
+                <button class="primary" onclick="openOrderForm()">
+                    + Create Order
+                </button>
             </div>
 
-            <div id="fleetSummary" class="fleet-summary"></div>
+            <div class="filter-bar">
 
-        </article>
+                <input
+                    type="text"
+                    id="orderSearch"
+                    placeholder="Search orders..."
+                    oninput="renderOrders()"
+                >
 
-    </div>
+                <select id="statusFilter" onchange="renderOrders()">
+                    <option>All</option>
+                    <option>Pending</option>
+                    <option>In Transit</option>
+                    <option>Delivered</option>
+                    <option>Cancelled</option>
+                </select>
 
-    <article class="panel table-panel">
-
-        <div class="panel-head">
-            <div>
-                <h2>Recent deliveries</h2>
-                <p>Latest activity from your order queue</p>
             </div>
-            <button class="primary small" onclick="showView('orders');openOrderForm()">＋ New order</button>
-        </div>
 
-        <div class="table-scroll">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ORDER ID</th>
-                        <th>CUSTOMER</th>
-                        <th>DESTINATION</th>
-                        <th>DRIVER</th>
-                        <th>STATUS</th>
-                        <th>ETA</th>
-                    </tr>
-                </thead>
-                <tbody id="recentRows"></tbody>
-            </table>
-        </div>
+            <article class="panel">
 
-    </article>
+                <div class="table-wrapper">
 
-</section>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Order ID</th>
+                                <th>Customer</th>
+                                <th>Address</th>
+                                <th>Weight</th>
+                                <th>Priority</th>
+                                <th>Driver</th>
+                                <th>Status</th>
+                                <th>Update</th>
+                            </tr>
+                        </thead>
 
+                        <tbody id="orderRows"></tbody>
+                    </table>
 
-<!-- ORDERS -->
+                </div>
 
-<section id="orders" class="view">
+            </article>
 
-    <div class="section-heading">
-        <div>
-            <h2>Order management</h2>
-            <p>Review customer requests and keep every delivery moving.</p>
-        </div>
-        <button class="primary" onclick="openOrderForm()">＋ Create order</button>
-    </div>
-
-    <div class="toolbar">
-        <input id="orderSearch" placeholder="Search order or customer…" oninput="renderOrders()">
-
-        <select id="statusFilter" onchange="renderOrders()">
-            <option value="All">All statuses</option>
-            <option>Pending</option>
-            <option>In Transit</option>
-            <option>Delivered</option>
-            <option>Cancelled</option>
-        </select>
-    </div>
-
-    <article class="panel table-panel">
-
-        <div class="table-scroll">
-            <table>
-                <thead>
-                    <tr>
-                        <th>ORDER</th>
-                        <th>CUSTOMER</th>
-                        <th>DESTINATION</th>
-                        <th>WEIGHT</th>
-                        <th>PRIORITY</th>
-                        <th>DRIVER</th>
-                        <th>STATUS</th>
-                        <th>UPDATE</th>
-                    </tr>
-                </thead>
-                <tbody id="orderRows"></tbody>
-            </table>
-        </div>
-
-    </article>
-
-</section>
+        </section>
 
 
-<!-- DRIVERS -->
+        <!-- DRIVERS -->
+        <section id="drivers" class="view">
 
-<section id="drivers" class="view">
-
-    <div class="section-heading">
-        <div>
-            <h2>Driver management</h2>
-            <p>Monitor your delivery team and current assignments.</p>
-        </div>
-    </div>
-
-    <div id="driverCards" class="driver-grid"></div>
-
-</section>
-
-
-<!-- ROUTE PLANNING -->
-
-<section id="routes" class="view">
-
-    <div class="section-heading">
-        <div>
-            <h2>Route planning</h2>
-            <p>Build a practical delivery sequence for the active order queue.</p>
-        </div>
-
-        <button class="primary" onclick="optimizeRoute()">✦ Optimize delivery route</button>
-    </div>
-
-    <div class="route-layout">
-
-        <article class="panel">
-
-            <div class="panel-head">
+            <div class="section-heading">
                 <div>
-                    <h3>Delivery route</h3>
-                    <p>Warehouse and customer stop sequence</p>
-                </div>
-                <span class="tag">PLANNING</span>
-            </div>
-
-            <div id="routeCanvas" class="route-canvas">
-                <div class="empty-state">
-                    Select “Optimize delivery route” to generate today's stop sequence.
+                    <h2>Driver Management</h2>
+                    <p>Monitor your delivery drivers.</p>
                 </div>
             </div>
 
-        </article>
+            <div class="driver-grid" id="driverCards"></div>
 
-        <article class="panel route-stats">
+        </section>
 
-            <h3>Route summary</h3>
 
-            <div>
-                <small>Total stops</small>
-                <b id="routeStops">—</b>
+        <!-- ROUTES -->
+        <section id="routes" class="view">
+
+            <div class="section-heading">
+                <div>
+                    <h2>Route Planning</h2>
+                    <p>Generate an optimized delivery sequence.</p>
+                </div>
+
+                <button class="primary" onclick="optimizeRoute()">
+                    Optimize Route
+                </button>
             </div>
 
-            <div>
-                <small>Estimated route distance</small>
-                <b id="routeDistance">—</b>
+            <div class="metrics-grid">
+
+                <article class="metric-card">
+                    <small>Total Stops</small>
+                    <h2 id="routeStops">0</h2>
+                </article>
+
+                <article class="metric-card">
+                    <small>Route Distance</small>
+                    <h2 id="routeDistance">0 km</h2>
+                </article>
+
+                <article class="metric-card">
+                    <small>Route Status</small>
+                    <h2 id="routeStatus">Not Generated</h2>
+                </article>
+
             </div>
 
-            <div>
-                <small>Planning status</small>
-                <b id="routeStatus">Not generated</b>
+            <article class="panel">
+                <h3>Suggested Delivery Sequence</h3>
+                <div id="routeCanvas">
+                    <p>Click Optimize Route to generate a delivery route.</p>
+                </div>
+            </article>
+
+        </section>
+
+
+        <!-- DEMO LIVE MAP -->
+        <section id="map" class="view">
+
+            <div class="section-heading">
+
+                <div>
+                    <h2>Demo Live Map – Pune</h2>
+                    <p>Watch the simulated delivery truck move across Pune.</p>
+                </div>
+
             </div>
 
-            <p>Route estimates use the sample road network and are intended for demonstration.</p>
+            <article class="demo-map-panel">
 
-        </article>
+                <div class="map-toolbar">
 
-    </div>
+                    <button
+                        class="primary"
+                        id="mapStart"
+                        onclick="startDemoMap()">
+                        ▶ Start
+                    </button>
 
-</section>
+                    <button
+                        class="secondary"
+                        id="mapPause"
+                        onclick="pauseDemoMap()">
+                        Ⅱ Pause
+                    </button>
 
+                    <button
+                        class="secondary"
+                        onclick="resetDemoMap()">
+                        ↻ Reset
+                    </button>
 
-<!-- DEMO LIVE MAP -->
+                    <span class="map-status" id="mapStatus">
+                        ● Simulation ready
+                    </span>
 
-<section id="map" class="view">
+                </div>
 
-    <div class="section-heading">
-        <div>
-            <h2>Demo Live Map</h2>
-            <p>Watch delivery drivers move between the warehouse and customer locations.</p>
-        </div>
-    </div>
+                <div id="demoMap"></div>
 
-    <article class="demo-map-panel">
+                <div class="map-legend">
 
-        <div class="map-toolbar">
+                    <span>
+                        <i class="warehouse-dot"></i>
+                        Warehouse
+                    </span>
 
-            <button class="primary" id="mapStart" onclick="startDemoMap()">▶ Start</button>
+                    <span>
+                        <i class="customer-dot"></i>
+                        Customer
+                    </span>
 
-            <button class="secondary" id="mapPause" onclick="pauseDemoMap()">Ⅱ Pause</button>
+                    <span>
+                        <i class="driver-dot"></i>
+                        Moving Driver
+                    </span>
 
-            <button class="secondary" onclick="resetDemoMap()">↻ Reset</button>
+                </div>
 
-            <span class="map-status" id="mapStatus">● Simulation ready</span>
-
-        </div>
-
-        <div class="demo-map" id="demoMap">
-            <div class="empty-state">Loading demo map...</div>
-        </div>
-
-        <div class="map-legend">
-            <span><i class="warehouse-dot"></i> Warehouse</span>
-            <span><i class="customer-dot"></i> Customer</span>
-            <span><i class="driver-dot"></i> Moving driver</span>
-        </div>
-
-    </article>
-
-    <div class="map-info-grid">
-
-        <article class="map-info-card">
-            <small>Delivery stops</small>
-            <b id="mapStops">5</b>
-        </article>
-
-        <article class="map-info-card">
-            <small>Active demo drivers</small>
-            <b id="mapDrivers">1</b>
-        </article>
-
-        <article class="map-info-card">
-            <small>Simulation status</small>
-            <b id="mapDeliveryStatus">Ready</b>
-        </article>
-
-    </div>
-
-</section>
+            </article>
 
 
-<!-- ANALYTICS -->
+            <div class="map-info-grid">
 
-<section id="analytics" class="view">
+                <article class="map-info-card">
+                    <small>Delivery Stops</small>
+                    <b id="mapStops">5</b>
+                </article>
 
-    <div class="section-heading">
-        <div>
-            <h2>Performance analytics</h2>
-            <p>A quick view of delivery service performance.</p>
-        </div>
+                <article class="map-info-card">
+                    <small>Active Demo Drivers</small>
+                    <b id="mapDrivers">1</b>
+                </article>
 
-        <button class="secondary" onclick="window.location.href='/api/report.csv'">↓ Export report</button>
-    </div>
+                <article class="map-info-card">
+                    <small>Simulation Status</small>
+                    <b id="mapDeliveryStatus">Ready</b>
+                </article>
 
-    <div class="metrics analytics-metrics">
+            </div>
 
-        <article class="metric">
-            <span>Completed deliveries</span>
-            <strong id="aDelivered">—</strong>
-            <small>Orders marked delivered</small>
-        </article>
+        </section>
 
-        <article class="metric">
-            <span>Active drivers</span>
-            <strong id="aDrivers">—</strong>
-            <small>Drivers currently on delivery</small>
-        </article>
 
-        <article class="metric">
-            <span>Estimated distance saved</span>
-            <strong id="aSaved">—</strong>
-            <small>Illustrative demo estimate</small>
-        </article>
+        <!-- ANALYTICS -->
+        <section id="analytics" class="view">
 
-    </div>
+            <div class="section-heading">
+                <div>
+                    <h2>Performance Analytics</h2>
+                    <p>View delivery performance statistics.</p>
+                </div>
+            </div>
 
-    <article class="panel">
-        <h3>Operational insights</h3>
-        <div id="insights" class="insights"></div>
-    </article>
+            <div class="metrics-grid">
 
-</section>
+                <article class="metric-card">
+                    <small>Delivered Orders</small>
+                    <h2 id="aDelivered">0</h2>
+                </article>
 
-</main>
+                <article class="metric-card">
+                    <small>Active Drivers</small>
+                    <h2 id="aDrivers">0</h2>
+                </article>
+
+                <article class="metric-card">
+                    <small>Distance Saved</small>
+                    <h2 id="aSaved">0 km</h2>
+                </article>
+
+            </div>
+
+            <article class="panel">
+                <h3>Delivery Insights</h3>
+                <div id="insights"></div>
+            </article>
+
+        </section>
+
+    </main>
+
+</div>
 
 
 <!-- CREATE ORDER MODAL -->
+<div class="modal" id="orderModal">
 
-<div class="modal-backdrop" id="orderModal">
+    <div class="modal-content">
 
-    <div class="modal">
-
-        <div class="modal-head">
-            <div>
-                <h2>Create delivery order</h2>
-                <p>Add a customer request to the dispatch queue.</p>
-            </div>
-
-            <button class="close" onclick="closeOrderForm()">×</button>
-        </div>
+        <h2>Create Delivery Order</h2>
 
         <form id="orderForm">
 
-            <label>
-                Customer name
-                <input name="customer" required placeholder="e.g. Neha Kulkarni">
-            </label>
+            <label>Customer Name</label>
+            <input type="text" name="customer" required>
 
-            <label>
-                Delivery destination
-                <select name="location_id" id="locationSelect" required></select>
-            </label>
+            <label>Delivery Address</label>
+            <input type="text" name="address" required>
 
-            <div class="form-row">
+            <label>Weight (kg)</label>
+            <input type="number" name="weight" min="1" required>
 
-                <label>
-                    Parcel weight (kg)
-                    <input name="weight" type="number" min="0.1" step="0.1" value="2" required>
-                </label>
+            <label>Priority</label>
+            <select name="priority">
+                <option value="1">Normal</option>
+                <option value="3">High</option>
+                <option value="5">Urgent</option>
+            </select>
 
-                <label>
-                    Priority
-                    <select name="priority">
-                        <option value="1">Standard</option>
-                        <option value="2" selected>Normal</option>
-                        <option value="3">High</option>
-                        <option value="5">Urgent</option>
-                    </select>
-                </label>
-
-            </div>
+            <label>Delivery Location</label>
+            <select name="location_id" id="locationSelect"></select>
 
             <div class="modal-actions">
-                <button type="button" class="secondary" onclick="closeOrderForm()">Cancel</button>
-                <button class="primary" type="submit">Create order</button>
+
+                <button type="submit" class="primary">
+                    Create Order
+                </button>
+
+                <button
+                    type="button"
+                    class="secondary"
+                    onclick="closeOrderForm()">
+                    Cancel
+                </button>
+
             </div>
 
         </form>
@@ -475,9 +488,8 @@
 </div>
 
 
-<div id="toast"></div>
-
-<script src="{{ url_for('static',filename='app.js') }}"></script>
+<!-- TOAST MESSAGE -->
+<div class="toast" id="toast"></div>
 
 </body>
 </html>
