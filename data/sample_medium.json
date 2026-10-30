@@ -1,0 +1,729 @@
+{
+  "locations": [
+    {
+      "id": "W",
+      "name": "Warehouse",
+      "x": 0,
+      "y": 0,
+      "priority": 0,
+      "time_window": "08:00-18:00",
+      "weight": 0
+    },
+    {
+      "id": "C1",
+      "name": "Customer 1",
+      "x": 7,
+      "y": 11,
+      "priority": 2,
+      "time_window": "09:00-17:00",
+      "weight": 2
+    },
+    {
+      "id": "C2",
+      "name": "Customer 2",
+      "x": 14,
+      "y": 5,
+      "priority": 3,
+      "time_window": "09:00-17:00",
+      "weight": 3
+    },
+    {
+      "id": "C3",
+      "name": "Customer 3",
+      "x": 2,
+      "y": 16,
+      "priority": 4,
+      "time_window": "09:00-17:00",
+      "weight": 4
+    },
+    {
+      "id": "C4",
+      "name": "Customer 4",
+      "x": 9,
+      "y": 10,
+      "priority": 5,
+      "time_window": "09:00-17:00",
+      "weight": 5
+    },
+    {
+      "id": "C5",
+      "name": "Customer 5",
+      "x": 16,
+      "y": 4,
+      "priority": 1,
+      "time_window": "09:00-17:00",
+      "weight": 6
+    },
+    {
+      "id": "C6",
+      "name": "Customer 6",
+      "x": 4,
+      "y": 15,
+      "priority": 2,
+      "time_window": "09:00-17:00",
+      "weight": 7
+    },
+    {
+      "id": "C7",
+      "name": "Customer 7",
+      "x": 11,
+      "y": 9,
+      "priority": 3,
+      "time_window": "09:00-17:00",
+      "weight": 8
+    },
+    {
+      "id": "C8",
+      "name": "Customer 8",
+      "x": 18,
+      "y": 3,
+      "priority": 4,
+      "time_window": "09:00-17:00",
+      "weight": 1
+    },
+    {
+      "id": "C9",
+      "name": "Customer 9",
+      "x": 6,
+      "y": 14,
+      "priority": 5,
+      "time_window": "09:00-17:00",
+      "weight": 2
+    },
+    {
+      "id": "C10",
+      "name": "Customer 10",
+      "x": 13,
+      "y": 8,
+      "priority": 1,
+      "time_window": "09:00-17:00",
+      "weight": 3
+    },
+    {
+      "id": "C11",
+      "name": "Customer 11",
+      "x": 1,
+      "y": 2,
+      "priority": 2,
+      "time_window": "09:00-17:00",
+      "weight": 4
+    },
+    {
+      "id": "C12",
+      "name": "Customer 12",
+      "x": 8,
+      "y": 13,
+      "priority": 3,
+      "time_window": "09:00-17:00",
+      "weight": 5
+    },
+    {
+      "id": "C13",
+      "name": "Customer 13",
+      "x": 15,
+      "y": 7,
+      "priority": 4,
+      "time_window": "09:00-17:00",
+      "weight": 6
+    },
+    {
+      "id": "C14",
+      "name": "Customer 14",
+      "x": 3,
+      "y": 1,
+      "priority": 5,
+      "time_window": "09:00-17:00",
+      "weight": 7
+    }
+  ],
+  "roads": [
+    {
+      "from": "C0",
+      "to": "C1",
+      "distance": 5.1,
+      "travel_time": 6,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C2",
+      "distance": 3.61,
+      "travel_time": 7,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C4",
+      "distance": 7.21,
+      "travel_time": 9,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C5",
+      "distance": 6.4,
+      "travel_time": 10,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C7",
+      "distance": 7.0,
+      "travel_time": 12,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C8",
+      "distance": 9.43,
+      "travel_time": 13,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C10",
+      "distance": 10.05,
+      "travel_time": 15,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C11",
+      "distance": 12.53,
+      "travel_time": 16,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C13",
+      "distance": 13.15,
+      "travel_time": 18,
+      "traffic": 1.0
+    },
+    {
+      "from": "C0",
+      "to": "C14",
+      "distance": 14.0,
+      "travel_time": 19,
+      "traffic": 1.0
+    },
+    {
+      "from": "C1",
+      "to": "C3",
+      "distance": 4.47,
+      "travel_time": 7,
+      "traffic": 1.1
+    },
+    {
+      "from": "C1",
+      "to": "C4",
+      "distance": 3.61,
+      "travel_time": 8,
+      "traffic": 1.1
+    },
+    {
+      "from": "C1",
+      "to": "C6",
+      "distance": 7.07,
+      "travel_time": 10,
+      "traffic": 1.1
+    },
+    {
+      "from": "C1",
+      "to": "C7",
+      "distance": 6.71,
+      "travel_time": 11,
+      "traffic": 1.1
+    },
+    {
+      "from": "C1",
+      "to": "C9",
+      "distance": 10.0,
+      "travel_time": 13,
+      "traffic": 1.1
+    },
+    {
+      "from": "C1",
+      "to": "C10",
+      "distance": 9.85,
+      "travel_time": 14,
+      "traffic": 1.1
+    },
+    {
+      "from": "C1",
+      "to": "C12",
+      "distance": 11.0,
+      "travel_time": 16,
+      "traffic": 1.1
+    },
+    {
+      "from": "C1",
+      "to": "C13",
+      "distance": 13.0,
+      "travel_time": 17,
+      "traffic": 1.1
+    },
+    {
+      "from": "C2",
+      "to": "C3",
+      "distance": 1.0,
+      "travel_time": 6,
+      "traffic": 1.2
+    },
+    {
+      "from": "C2",
+      "to": "C5",
+      "distance": 4.24,
+      "travel_time": 8,
+      "traffic": 1.2
+    },
+    {
+      "from": "C2",
+      "to": "C6",
+      "distance": 4.12,
+      "travel_time": 9,
+      "traffic": 1.2
+    },
+    {
+      "from": "C2",
+      "to": "C8",
+      "distance": 7.21,
+      "travel_time": 11,
+      "traffic": 1.2
+    },
+    {
+      "from": "C2",
+      "to": "C9",
+      "distance": 7.28,
+      "travel_time": 12,
+      "traffic": 1.2
+    },
+    {
+      "from": "C2",
+      "to": "C11",
+      "distance": 10.3,
+      "travel_time": 14,
+      "traffic": 1.2
+    },
+    {
+      "from": "C2",
+      "to": "C12",
+      "distance": 10.44,
+      "travel_time": 15,
+      "traffic": 1.2
+    },
+    {
+      "from": "C2",
+      "to": "C14",
+      "distance": 13.42,
+      "travel_time": 17,
+      "traffic": 1.2
+    },
+    {
+      "from": "C3",
+      "to": "C4",
+      "distance": 1.41,
+      "travel_time": 6,
+      "traffic": 1.0
+    },
+    {
+      "from": "C3",
+      "to": "C5",
+      "distance": 6.32,
+      "travel_time": 7,
+      "traffic": 1.0
+    },
+    {
+      "from": "C3",
+      "to": "C7",
+      "distance": 4.47,
+      "travel_time": 9,
+      "traffic": 1.0
+    },
+    {
+      "from": "C3",
+      "to": "C8",
+      "distance": 5.0,
+      "travel_time": 10,
+      "traffic": 1.0
+    },
+    {
+      "from": "C3",
+      "to": "C10",
+      "distance": 7.62,
+      "travel_time": 12,
+      "traffic": 1.0
+    },
+    {
+      "from": "C3",
+      "to": "C11",
+      "distance": 8.06,
+      "travel_time": 13,
+      "traffic": 1.0
+    },
+    {
+      "from": "C3",
+      "to": "C13",
+      "distance": 10.77,
+      "travel_time": 15,
+      "traffic": 1.0
+    },
+    {
+      "from": "C3",
+      "to": "C14",
+      "distance": 11.18,
+      "travel_time": 16,
+      "traffic": 1.0
+    },
+    {
+      "from": "C4",
+      "to": "C6",
+      "distance": 2.0,
+      "travel_time": 7,
+      "traffic": 1.1
+    },
+    {
+      "from": "C4",
+      "to": "C7",
+      "distance": 5.83,
+      "travel_time": 8,
+      "traffic": 1.1
+    },
+    {
+      "from": "C4",
+      "to": "C9",
+      "distance": 5.1,
+      "travel_time": 10,
+      "traffic": 1.1
+    },
+    {
+      "from": "C4",
+      "to": "C10",
+      "distance": 8.49,
+      "travel_time": 11,
+      "traffic": 1.1
+    },
+    {
+      "from": "C4",
+      "to": "C12",
+      "distance": 8.25,
+      "travel_time": 13,
+      "traffic": 1.1
+    },
+    {
+      "from": "C4",
+      "to": "C13",
+      "distance": 9.0,
+      "travel_time": 14,
+      "traffic": 1.1
+    },
+    {
+      "from": "C5",
+      "to": "C6",
+      "distance": 3.16,
+      "travel_time": 6,
+      "traffic": 1.2
+    },
+    {
+      "from": "C5",
+      "to": "C8",
+      "distance": 6.71,
+      "travel_time": 8,
+      "traffic": 1.2
+    },
+    {
+      "from": "C5",
+      "to": "C9",
+      "distance": 5.66,
+      "travel_time": 9,
+      "traffic": 1.2
+    },
+    {
+      "from": "C5",
+      "to": "C11",
+      "distance": 6.0,
+      "travel_time": 11,
+      "traffic": 1.2
+    },
+    {
+      "from": "C5",
+      "to": "C12",
+      "distance": 8.6,
+      "travel_time": 12,
+      "traffic": 1.2
+    },
+    {
+      "from": "C5",
+      "to": "C14",
+      "distance": 9.06,
+      "travel_time": 14,
+      "traffic": 1.2
+    },
+    {
+      "from": "C6",
+      "to": "C7",
+      "distance": 4.12,
+      "travel_time": 6,
+      "traffic": 1.0
+    },
+    {
+      "from": "C6",
+      "to": "C8",
+      "distance": 2.83,
+      "travel_time": 7,
+      "traffic": 1.0
+    },
+    {
+      "from": "C6",
+      "to": "C10",
+      "distance": 6.4,
+      "travel_time": 9,
+      "traffic": 1.0
+    },
+    {
+      "from": "C6",
+      "to": "C11",
+      "distance": 5.83,
+      "travel_time": 10,
+      "traffic": 1.0
+    },
+    {
+      "from": "C6",
+      "to": "C13",
+      "distance": 9.22,
+      "travel_time": 12,
+      "traffic": 1.0
+    },
+    {
+      "from": "C6",
+      "to": "C14",
+      "distance": 8.94,
+      "travel_time": 13,
+      "traffic": 1.0
+    },
+    {
+      "from": "C7",
+      "to": "C9",
+      "distance": 3.61,
+      "travel_time": 7,
+      "traffic": 1.1
+    },
+    {
+      "from": "C7",
+      "to": "C10",
+      "distance": 3.16,
+      "travel_time": 8,
+      "traffic": 1.1
+    },
+    {
+      "from": "C7",
+      "to": "C12",
+      "distance": 6.4,
+      "travel_time": 10,
+      "traffic": 1.1
+    },
+    {
+      "from": "C7",
+      "to": "C13",
+      "distance": 6.32,
+      "travel_time": 11,
+      "traffic": 1.1
+    },
+    {
+      "from": "C8",
+      "to": "C9",
+      "distance": 6.08,
+      "travel_time": 6,
+      "traffic": 1.2
+    },
+    {
+      "from": "C8",
+      "to": "C11",
+      "distance": 3.61,
+      "travel_time": 8,
+      "traffic": 1.2
+    },
+    {
+      "from": "C8",
+      "to": "C12",
+      "distance": 4.0,
+      "travel_time": 9,
+      "traffic": 1.2
+    },
+    {
+      "from": "C8",
+      "to": "C14",
+      "distance": 6.71,
+      "travel_time": 11,
+      "traffic": 1.2
+    },
+    {
+      "from": "C9",
+      "to": "C10",
+      "distance": 1.0,
+      "travel_time": 6,
+      "traffic": 1.0
+    },
+    {
+      "from": "C9",
+      "to": "C11",
+      "distance": 5.39,
+      "travel_time": 7,
+      "traffic": 1.0
+    },
+    {
+      "from": "C9",
+      "to": "C13",
+      "distance": 4.12,
+      "travel_time": 9,
+      "traffic": 1.0
+    },
+    {
+      "from": "C9",
+      "to": "C14",
+      "distance": 7.81,
+      "travel_time": 10,
+      "traffic": 1.0
+    },
+    {
+      "from": "C10",
+      "to": "C12",
+      "distance": 6.32,
+      "travel_time": 7,
+      "traffic": 1.1
+    },
+    {
+      "from": "C10",
+      "to": "C13",
+      "distance": 5.0,
+      "travel_time": 8,
+      "traffic": 1.1
+    },
+    {
+      "from": "C11",
+      "to": "C12",
+      "distance": 2.24,
+      "travel_time": 6,
+      "traffic": 1.2
+    },
+    {
+      "from": "C11",
+      "to": "C14",
+      "distance": 5.83,
+      "travel_time": 8,
+      "traffic": 1.2
+    },
+    {
+      "from": "C12",
+      "to": "C13",
+      "distance": 3.16,
+      "travel_time": 6,
+      "traffic": 1.0
+    },
+    {
+      "from": "C12",
+      "to": "C14",
+      "distance": 2.24,
+      "travel_time": 7,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C1",
+      "distance": 2,
+      "travel_time": 3,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C2",
+      "distance": 3,
+      "travel_time": 4,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C3",
+      "distance": 4,
+      "travel_time": 5,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C4",
+      "distance": 5,
+      "travel_time": 6,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C5",
+      "distance": 6,
+      "travel_time": 7,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C6",
+      "distance": 7,
+      "travel_time": 8,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C7",
+      "distance": 8,
+      "travel_time": 9,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C8",
+      "distance": 9,
+      "travel_time": 10,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C9",
+      "distance": 10,
+      "travel_time": 11,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C10",
+      "distance": 11,
+      "travel_time": 12,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C11",
+      "distance": 12,
+      "travel_time": 13,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C12",
+      "distance": 13,
+      "travel_time": 14,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C13",
+      "distance": 14,
+      "travel_time": 15,
+      "traffic": 1.0
+    },
+    {
+      "from": "W",
+      "to": "C14",
+      "distance": 15,
+      "travel_time": 16,
+      "traffic": 1.0
+    }
+  ]
+}
